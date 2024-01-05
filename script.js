@@ -203,20 +203,15 @@ function updateGraphWithEigenvector(index) {
 
 
 function getColorForValue(value, normalizedValues) {
-    // Normalize the specific value
     var normalizedValue = (value - Math.min(...normalizedValues)) / (Math.max(...normalizedValues) - Math.min(...normalizedValues));
-
-    // Interpolate between two colors based on normalized value
-    // Example: blue (0, 0, 255) to red (255, 0, 0)
-    var red = Math.round(normalizedValue * 255);
-    var blue = 255 - red;
-    return `rgb(${red}, 0, ${blue})`;
+    var hue = 240 - (normalizedValue * 240);
+    return `hsl(${hue}, 100%, 50%)`;
 }
-
 
 function normalizeValues(values) {
     var min = Math.min(...values);
     var max = Math.max(...values);
-    return values.map(value => (value - min) / (max - min));
+    var range = max - min;
+    return values.map(value => (value - min) / range);
 }
 
