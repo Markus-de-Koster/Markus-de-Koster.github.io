@@ -20,7 +20,10 @@
 1 0 0 0 0</textarea>
             
         <button id="visualize-button">Visualize Graph</button>
-        <button id="reconstruct-button">Reconstruct Adjacency</button>
+        <h2>Predefined graphs</h2>
+        <button id="graph-small-button">Small Graph</button>
+        <button id="graph-cluster-button">Cluster Graph</button>
+        <button id="graph-large-button">Large Graph</button>
     </section>
 
     <section id="graph-display">
@@ -63,7 +66,10 @@
         </p>
     </section>
     <section id="reconstructed-matrix">
-        <h2>Reconstructed Adjacency Matrix</h2>
+        <h2>Reconstruct Adjacency Matrix</h2>
+        <button id="reconstruct-button">Reconstruct Adjacency</button>
+        <p>Reconstructs the Adjacency Matrix from the eigenvalues and eigenvectors.</p>
+        <p>False reconstructions are marked in red. In this algorithm, elements on the diagonal show the amount of connections to other nodes. Hence, the diagonal will always be marked in red. </p>
         <div id="reconstructed-matrix-content"></div>
     </section>    
 </body>

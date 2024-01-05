@@ -104,6 +104,17 @@ document.getElementById('reconstruct-button').addEventListener('click', function
     displayReconstructedMatrix(reconstructedMatrix, originalMatrix);
 });
 
+document.getElementById('graph-small-button').addEventListener('click', function() {
+    document.getElementById('adjacency-matrix').value = "0 1 1 0 1 \n1 0 0 0 0 \n1 0 0 1 0 \n0 0 1 0 0 \n1 0 0 0 0"
+});
+
+document.getElementById('graph-cluster-button').addEventListener('click', function() {
+    document.getElementById('adjacency-matrix').value = "0 1 1 0 1 0 0 0 0 0 0 0 0 0 \n1 0 0 0 0 0 0 0 0 0 0 0 0 0 \n1 0 0 1 0 0 0 0 0 0 0 0 0 0 \n0 0 1 0 0 0 0 0 0 0 0 0 0 0 \n1 0 0 0 0 1 0 0 0 0 0 0 0 0 \n0 0 0 0 1 0 1 1 0 1 0 0 0 0 \n0 0 0 0 0 1 0 0 0 0 0 0 0 0 \n0 0 0 0 0 1 0 0 1 0 0 0 0 0 \n0 0 0 0 0 0 0 1 0 0 0 0 0 0 \n0 0 0 0 0 1 0 0 0 0 0 0 0 0 \n0 0 0 0 0 0 0 0 0 0 0 1 0 1 \n0 0 0 0 0 0 0 0 0 0 1 0 1 0 \n0 0 0 0 0 0 0 0 0 0 0 1 0 1 \n0 0 0 0 0 0 0 0 0 0 1 0 1 0"
+});
+
+document.getElementById('graph-large-button').addEventListener('click', function() {
+    document.getElementById('adjacency-matrix').value = "0 1 1 0 1 0 0 0 0 0 0 0 0 0 \n1 0 0 0 0 0 0 0 0 0 0 0 0 0 \n1 0 0 1 0 0 0 0 0 0 0 0 0 0 \n0 0 1 0 0 0 0 0 0 0 0 0 0 0 \n1 0 0 0 0 1 0 0 0 0 0 0 0 0 \n0 0 0 0 1 0 1 1 0 1 0 0 0 0 \n0 0 0 0 0 1 0 0 0 0 0 0 0 0 \n0 0 0 0 0 1 0 0 1 0 0 0 0 0 \n0 0 0 0 0 0 0 1 0 0 0 0 0 0 \n0 0 0 0 0 1 0 0 0 0 1 0 0 0 \n0 0 0 0 0 0 0 0 0 1 0 1 0 1 \n0 0 0 0 0 0 0 0 0 0 1 0 1 0 \n0 0 0 0 0 0 0 0 0 0 0 1 0 1 \n0 0 0 0 0 0 0 0 0 0 1 0 1 0"
+});
 
 
 function calculateLaplacianAndEigen(matrix) {
