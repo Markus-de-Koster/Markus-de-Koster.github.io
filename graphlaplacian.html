@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Laplacian Visualization</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
+</head>
+<body>
+    <section id="input-section">
+        <h2>Enter Adjacency Matrix</h2>
+        <textarea id="adjacency-matrix" rows="6" cols="50">0 1 1 0 1
+1 0 0 0 0
+1 0 0 1 0
+0 0 1 0 0
+1 0 0 0 0</textarea>
+            
+        <button id="visualize-button">Visualize Graph</button>
+    </section>
+
+    <section id="graph-display">
+        <h2>Graph Visualization</h2>
+        <div id="graph" style="width: 600px; height: 400px; border: 1px solid lightgray;"></div>
+    </section>
+
+    <section id="results">
+        <h2>Results</h2>
+        <div id="laplacian"></div>
+        <div id="eigenvalues"></div>
+        <div id="eigenvectors"></div>
+        <p id="disclaimer">Note: The highlighted row represents the eigenvalues.</p>
+    </section>
+</body>
+</html>

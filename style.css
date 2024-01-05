@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0;
+}
+
+header h1 {
+    margin: 0;
+}
+
+#about, #projects {
+    padding: 1em;
+    margin: 1em 0;
+}
+
+#about h2, #projects h2 {
+    color: #333;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #fff;
+    margin-bottom: 1em;
+    padding: 1em;
+    border: solid 1px #ddd;
+}
+
+section {
+    margin: 1em;
+    padding: 1em;
+    background: #fff;
+    border: solid 1px #ddd;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 10px 0;
+    max-width: 100%;
+    text-align: center;
+}
+
+td {
+    border: 1px solid black;
+    padding: 5px 10px;
+    text-align: center;
+}
+.eigenvalues-row {
+    background-color: #54f3de;
+}
+
+.node-column {
+    background-color: #6882f5;
+}
+
