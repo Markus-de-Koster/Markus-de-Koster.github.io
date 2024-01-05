@@ -12,6 +12,7 @@
 <body>
     <section id="input-section">
         <h2>Enter Adjacency Matrix</h2>
+        <p>0 = no connection, 1 = connection. Enter a symmetrical matrix (mirrored at diagonal)</p>
         <textarea id="adjacency-matrix" rows="6" cols="50">0 1 1 0 1
 1 0 0 0 0
 1 0 0 1 0
@@ -33,5 +34,33 @@
         <div id="eigenvectors"></div>
         <p id="disclaimer">Note: The highlighted row represents the eigenvalues.</p>
     </section>
+    <section id="explanations">
+        <h2>Explanations</h2>
+    
+        <h3>Graph Structure Embedding</h3>
+        <p>
+            Eigenvalues and eigenvectors are fundamental in numerically embedding the structure of a graph into vectors assigned to nodes. This embedding captures the essence of the graph's connectivity and can reveal properties such as clusters, bridges, or centrality.
+        </p>
+    
+        <h3>Laplacian Matrix</h3>
+        <p>
+            The Laplacian matrix of a graph is a representation of its structure. It is calculated as L = D - A, where D is the degree matrix (a diagonal matrix where D[i][i] is the degree of node i) and A is the adjacency matrix of the graph. The Laplacian matrix captures the degree of each vertex and the connections between them.
+        </p>
+    
+        <h3>Eigenvalues and Eigenvectors of the Laplacian</h3>
+        <p>
+            Eigenvalues and eigenvectors of the Laplacian matrix provide insights into the graph's properties. Eigenvalues reflect the topology of the graph, where smaller eigenvalues indicate tightly-knit communities or clusters within the graph. The corresponding eigenvectors can be seen as indicators of node positions within these communities.
+        </p>
+    
+        <h3>Significance in Graph Analysis</h3>
+        <p>
+            Analyzing the eigenvalues and eigenvectors of the Laplacian matrix is crucial in understanding the graph's structure. For instance, the number of zero eigenvalues corresponds to the number of connected components in the graph. Eigenvectors associated with these zero eigenvalues indicate the nodes belonging to each connected component.
+        </p>
+    
+        <p>
+            Furthermore, the second-smallest eigenvalue (often called the Fiedler value) and its corresponding eigenvector (the Fiedler vector) are particularly important in spectral graph theory. They can be used to partition the graph into two subgraphs effectively, aiding in tasks like community detection and graph visualization.
+        </p>
+    </section>
+    
 </body>
 </html>
