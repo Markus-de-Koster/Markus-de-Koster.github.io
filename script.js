@@ -1,16 +1,24 @@
+var globalEigenvectors
+var globalEigenvalues
+var originalMatrix
+// Global variables
+var network, nodes;
+
 function visualizeGraph(matrix) {
-    // Parse the matrix to create nodes and edges for the graph
-    var nodes = [];
-    var edges = [];
+    originalMatrix = matrix
+    // Initialize the global nodes variable
+    nodes = new vis.DataSet([]);
+
+    var edges = new vis.DataSet([]);
     var addedEdges = new Set(); // To track added edges
 
     for (let i = 0; i < matrix.length; i++) {
-        nodes.push({ id: i, label: String(i) });
+        nodes.add({ id: i, label: String(i) });
         for (let j = 0; j < matrix[i].length; j++) {
             if (matrix[i][j] === 1) {
                 var edgeKey = i < j ? `${i}-${j}` : `${j}-${i}`;
                 if (!addedEdges.has(edgeKey)) {
-                    edges.push({ from: i, to: j });
+                    edges.add({ from: i, to: j });
                     addedEdges.add(edgeKey);
                 }
             }
@@ -20,18 +28,69 @@ function visualizeGraph(matrix) {
     // Create a network
     var container = document.getElementById('graph');
     var data = {
-        nodes: new vis.DataSet(nodes),
-        edges: new vis.DataSet(edges)
+        nodes: nodes,
+        edges: edges
     };
-    var options = {}; // You can customize the options as needed
-    var network = new vis.Network(container, data, options);
+    var options = {}; // Customize options as needed
+    network = new vis.Network(container, data, options);
 }
+
+function reconstructAdjacencyMatrix(eigenvalues, eigenvectors) {
+    // Reconstruct Laplacian: L = Q Lambda Q^-1
+    var Q = constructEigenvectorMatrix(eigenvectors)
+    var Lambda = numeric.diag(eigenvalues);
+    var QInverse = numeric.inv(Q);
+    var L = numeric.dot(Q, numeric.dot(Lambda, QInverse));
+
+    // Estimate Degree Matrix (D): Sum along rows of L
+    var D = L.map(row => row.reduce((a, b) => a + b, 0))
+             .map((sum, index) => {
+                 var degreeRow = new Array(L.length).fill(0);
+                 degreeRow[index] = sum;
+                 return degreeRow;
+             });
+
+    // Approximate Adjacency Matrix: A = D - L
+    var A = numeric.sub(D, L);
+
+    // Round off the elements in A to get 0 or 1
+    return A.map(row => row.map(value => Math.round(Math.abs(value))));
+}
+function constructEigenvectorMatrix(eigenvectors) {
+    var Q = [];
+    for (let i = 0; i < eigenvectors[0].length; i++) { // Iterate over each element in an eigenvector
+        Q.push([]);
+        for (let j = 0; j < eigenvectors.length; j++) { // Iterate over each eigenvector
+            Q[i].push(eigenvectors[i][j]);
+        }
+    }
+    return Q;
+}
+
+function displayReconstructedMatrix(reconstructedMatrix, originalMatrix) {
+    let table = '<table border="1">';
+    
+    for (let i = 0; i < reconstructedMatrix.length; i++) {
+        table += '<tr>';
+        for (let j = 0; j < reconstructedMatrix[i].length; j++) {
+            let cellValue = reconstructedMatrix[i][j];
+            let originalValue = originalMatrix[i][j];
+            let cellColor = cellValue === originalValue ? 'white' : 'red'; // Highlight differences in red
+            table += `<td style="background-color:${cellColor}">${cellValue}</td>`;
+        }
+        table += '</tr>';
+    }
+
+    table += '</table>';
+    document.getElementById('reconstructed-matrix-content').innerHTML = table;
+}
+
 function parseMatrix(input) {
     var rows = input.split('\n');
     return rows.map(row => row.trim().split(/\s+/).map(Number));
 }
 
-document.getElementById('visualize-button').addEventListener('click', function() {
+document.getElementById('visualize-button').addEventListener('click', function () {
     var matrixInput = document.getElementById('adjacency-matrix').value;
     var matrix = parseMatrix(matrixInput);
     visualizeGraph(matrix);
@@ -40,12 +99,18 @@ document.getElementById('visualize-button').addEventListener('click', function()
     displayResults(results.laplacianMatrix, results.eigenvalues, results.eigenvectors);
 });
 
+document.getElementById('reconstruct-button').addEventListener('click', function() {
+    var reconstructedMatrix = reconstructAdjacencyMatrix(globalEigenvalues, globalEigenvectors);
+    displayReconstructedMatrix(reconstructedMatrix, originalMatrix);
+});
+
+
 
 function calculateLaplacianAndEigen(matrix) {
     // Degree matrix
-    var degreeMatrix = matrix.map(function(row, i) {
-        var degree = row.reduce(function(a, b) { return a + b; }, 0);
-        return row.map(function(_, j) { return i === j ? degree : 0; });
+    var degreeMatrix = matrix.map(function (row, i) {
+        var degree = row.reduce(function (a, b) { return a + b; }, 0);
+        return row.map(function (_, j) { return i === j ? degree : 0; });
     });
 
     // Laplacian matrix: L = D - A
@@ -54,16 +119,13 @@ function calculateLaplacianAndEigen(matrix) {
     var eigen = numeric.eig(laplacianMatrix);
     var eigenvalues = eigen.lambda.x;
     var eigenvectors = eigen.E.x;
-
+    globalEigenvectors = eigenvectors
+    globalEigenvalues = eigenvalues
     return { laplacianMatrix, eigenvalues, eigenvectors };
 }
 
 function displayResults(laplacianMatrix, eigenvalues, eigenvectors) {
     document.getElementById('laplacian').innerHTML = 'Laplacian Matrix:<br>' + createMatrixTable(laplacianMatrix);
-
-    //var sortedResults = sortEigenvaluesAndEigenvectors(eigenvalues, eigenvectors);
-    //document.getElementById('eigenvalues').innerText = 'Eigenvalues:\n' + sortedResults.sortedEigenvalues.map(ev => roundToTwo(ev)).join(', ');
-    //document.getElementById('eigenvectors').innerHTML = 'Eigenvectors:<br>' + createEigenvectorMatrix(sortedResults.sortedEigenvectors, sortedResults.sortedEigenvalues);
     document.getElementById('eigenvalues').innerText = 'Eigenvalues:\n' + eigenvalues.map(ev => roundToTwo(ev)).join(', ');
     document.getElementById('eigenvectors').innerHTML = 'Eigenvectors:<br>' + createEigenvectorMatrix(eigenvectors, eigenvalues);
 }
@@ -86,21 +148,6 @@ function createMatrixTable(matrix) {
     return table;
 }
 
-function sortEigenvaluesAndEigenvectors(eigenvalues, eigenvectors) {
-    // Combine the eigenvalues and eigenvectors for sorting
-    var combined = eigenvalues.map((value, index) => {
-        return {value: value, vector: eigenvectors[index]};
-    });
-
-    // Sort based on the eigenvalues
-    combined.sort((a, b) => a.value - b.value);
-
-    // Separate them back out
-    return {
-        sortedEigenvalues: combined.map(a => a.value),
-        sortedEigenvectors: combined.map(a => a.vector)
-    };
-}
 
 function createEigenvectorMatrix(eigenvectors, eigenvalues) {
     let table = '<table border="1">';
@@ -108,7 +155,7 @@ function createEigenvectorMatrix(eigenvectors, eigenvalues) {
     table += '<tr class="eigenvalues-row">';
     table += `<td class="node-column"> Node </td>`;
     for (let i = 0; i < eigenvalues.length; i++) {
-        table += `<td>${roundToTwo(eigenvalues[i])}</td>`;
+        table += `<td><button onclick="highlightEigenvector(${i})">${roundToTwo(eigenvalues[i])}</button></td>`;
     }
     table += '</tr>';
 
@@ -117,11 +164,59 @@ function createEigenvectorMatrix(eigenvectors, eigenvalues) {
         table += '<tr>';
         table += `<td class="node-column">${i}</td>`;
         for (let j = 0; j < eigenvectors[i].length; j++) {
-            table += `<td>${roundToTwo(eigenvectors[i][j])}</td>`;
+            table += `<td id="cell-${j}-${i}">${roundToTwo(eigenvectors[i][j])}</td>`;
         }
         table += '</tr>';
     }
     table += '</table>';
     return table;
+}
+
+function highlightEigenvector(index) {
+    // Remove highlighting from all cells
+    var cells = document.querySelectorAll('#eigenvectors td');
+    cells.forEach(cell => cell.style.backgroundColor = '');
+
+    // Highlight the selected column
+    for (let i = 0; i < globalEigenvectors.length; i++) {
+        var cell = document.getElementById(`cell-${index}-${i}`);
+        if (cell) {
+            cell.style.backgroundColor = 'yellow'; // Choose your preferred highlight color
+        }
+    }
+
+    // Update the graph with eigenvector values and colors
+    updateGraphWithEigenvector(index);
+}
+
+function updateGraphWithEigenvector(index) {
+    var eigenvector = globalEigenvectors.map(function(value) { return value[index]; });
+    var normalizedEigenvector = normalizeValues(eigenvector);
+
+    eigenvector.forEach((value, i) => {
+        var color = getColorForValue(value, normalizedEigenvector);
+        nodes.update({ id: i, label: `Node ${i}\n${roundToTwo(value)}`, color: { background: color, border: color } });
+    });
+
+    network.redraw();
+}
+
+
+function getColorForValue(value, normalizedValues) {
+    // Normalize the specific value
+    var normalizedValue = (value - Math.min(...normalizedValues)) / (Math.max(...normalizedValues) - Math.min(...normalizedValues));
+
+    // Interpolate between two colors based on normalized value
+    // Example: blue (0, 0, 255) to red (255, 0, 0)
+    var red = Math.round(normalizedValue * 255);
+    var blue = 255 - red;
+    return `rgb(${red}, 0, ${blue})`;
+}
+
+
+function normalizeValues(values) {
+    var min = Math.min(...values);
+    var max = Math.max(...values);
+    return values.map(value => (value - min) / (max - min));
 }
 

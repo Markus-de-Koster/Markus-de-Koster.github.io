@@ -65,3 +65,13 @@ td {
     background-color: #6882f5;
 }
 
+.eigenvalues-row button {
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.eigenvalues-row button:hover {
+    background-color: #ddd;
+}
