@@ -12,7 +12,7 @@
 <body>
     <section id="input-section">
         <h2>Enter Adjacency Matrix</h2>
-        <p>0 = no connection, 1 = connection. Enter a symmetrical matrix (mirrored at diagonal)</p>
+        <p>0 = no connection, 1 = full connection. Values other than 0 are also accepted and result in a weighting of the connection. Enter a symmetrical matrix (mirrored at diagonal)</p>
         <textarea id="adjacency-matrix" rows="6" cols="50">0 1 1 0 1
 1 0 0 0 0
 1 0 0 1 0
@@ -24,6 +24,7 @@
         <button id="graph-small-button">Small Graph</button>
         <button id="graph-cluster-button">Cluster Graph</button>
         <button id="graph-large-button">Large Graph</button>
+        <button id="graph-weighted-button">Weighted Graph</button>
     </section>
 
     <section id="graph-display">
