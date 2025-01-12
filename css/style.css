@@ -1,0 +1,30 @@
+table {
+    border-collapse: collapse;
+    margin: 10px 0;
+    max-width: 100%;
+    text-align: center;
+}
+
+td {
+    border: 1px solid black;
+    padding: 5px 10px;
+    text-align: center;
+}
+.eigenvalues-row {
+    background-color: #54f3de;
+}
+
+.node-column {
+    background-color: #6882f5;
+}
+
+.eigenvalues-row button {
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.eigenvalues-row button:hover {
+    background-color: #ddd;
+}

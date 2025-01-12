@@ -3,35 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markus de Koster - about me</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Markus de Koster</title>
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    >
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <header>
-        <h1>Markus de Koster</h1>
-    </header>
+    <div id="header"></div>
 
-    <section id="about">
-        <h2>About Me</h2>
+
+    <section class="section" id="aboutme">
+        <div class="container">
+        <h2 class="title">About Me</h2>
         <p>
-            Artificial intelligence researcher at Cologne University of Applied Sciences (TH Köln) striving to transform the power grid to 100% renewable energies.
+            Artificial intelligence researcher and PhD student at Cologne University of Applied Sciences (TH Köln) striving to transform the power grid to 100% renewable energies.
         </p>
+        </div>
     </section>
 
-    <section id="projects">
-        <h2>Projects</h2>
-        <ul>
-            <li><a href="graphlaplacian.html">Graph LaPlacian Visualization</a></li>
-        </ul>
+      <!-- 3) "Projects" Section -->
+    <section class="section" id="projects">
+        <div class="container">
+        <h2 class="title">Projects</h2>
+        <!-- Example: using Bulma columns for each project card -->
+        <div class="columns is-multiline">
+            <div class="column is-6">
+            <div class="card">
+                <div class="card-content">
+                <p class="title is-5">Graph Laplacian Visualization</p>
+                <p>Check out my interactive visualization of Graph Laplacians.</p>
+                <footer class="card-footer">
+                    <a href="graphlaplacian.html" class="card-footer-item">View Project</a>
+                </footer>
+                </div>
+            </div>
+            </div>
+
+            <!-- Add more columns/cards for other projects -->
+        </div>
+        </div>
     </section>
 
-    <section id="projects">
-        <h2>Literature</h2>
-        <script src="https://bibbase.org/show?bib=https%3A%2F%2Fraw.githubusercontent.com%2FMarkus-de-Koster%2Fpqlit%2Frefs%2Fheads%2Fmain%2Fmeasurement-placement%2FMeasurement%2520Placement.bib&commas=true&noBootstrap=1&jsonp=1"></script> 
-    </section>
+    <!-- 4) "Publications" Section -->
+     <!-- BibTex.js script to load the .bib file -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/pcooksey/bibtex-js@1.0.0/src/bibtex_js.js"></script>
+    <section class="section" id="publications">
+        <div class="container">
+          <h2 class="title">Publications</h2>
+          <p>My publications and conference talks as first or second author:</p>
+          <bibtex src="references/publications.bib"></bibtex>
 
-    <footer>
+          <div id="bibtex_display"></div>
+          <div class="bibtex_template">
+            <!-- Author and Date -->
+            <div class="if author" style="font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span class="if date">
+                  <span class="date"></span>, 
+                </span>
+                <span class="author"></span><!--,
+                <span class="if BIBTEXTYPEKEY==ARTICLE">Article</span>
+                <span class="if BIBTEXTYPEKEY==BOOK">Book</span>
+                <span class="if BIBTEXTYPEKEY==THESIS">Thesis</span>
+                <span class="if BIBTEXTYPEKEY==PRESENTATION">Presentation</span>
+                <span class="if BIBTEXTYPEKEY==INPROCEEDINGS">Conference Proceedings</span>
+                <span class="if BIBTEXTYPEKEY==TECHREPORT">Technical Report</span>
+                <span class="if BIBTEXTYPEKEY==MISC">Miscellaneous</span>
+                -->
+              </div>
+              
+              <div class="if url">
+                <a class="url" target="_blank" style="color: black; text-decoration: none;">
+                  <i class="fas fa-external-link-alt"></i>
+                </a>
+              </div>
+            </div>
+          
+            <!-- Title -->
+            <div style="margin-left: 10px; margin-bottom: 5px;">
+              <span class="title" style="font-size: 16px; font-style: italic;"></span>
+            </div>
         
-    </footer>
+          </div>
+          
+        </div>
+    </section>
+    
+    <div id="footer"></div>
+    <script src="js/includes.js"></script>
 </body>
 </html>

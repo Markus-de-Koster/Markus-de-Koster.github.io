@@ -4,74 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph Laplacian Visualization</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js" defer></script>
     <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    >
 </head>
 <body>
-    <section id="input-section">
-        <h2>Enter Adjacency Matrix</h2>
-        <p>0 = no connection, 1 = full connection. Values other than 0 are also accepted and result in a weighting of the connection. Enter a symmetrical matrix (mirrored at diagonal)</p>
-        <textarea id="adjacency-matrix" rows="6" cols="50">0 1 1 0 1
-1 0 0 0 0
-1 0 0 1 0
-0 0 1 0 0
-1 0 0 0 0</textarea>
-            
-        <button id="visualize-button">Visualize Graph</button>
-        <h2>Predefined graphs</h2>
-        <button id="graph-small-button">Small Graph</button>
-        <button id="graph-cluster-button">Cluster Graph</button>
-        <button id="graph-large-button">Large Graph</button>
-        <button id="graph-weighted-button">Weighted Graph</button>
-    </section>
+    <div id="header"></div>
 
-    <section id="graph-display">
-        <h2>Graph Visualization</h2>
-        <div id="graph" style="width: 600px; height: 400px; border: 1px solid lightgray;"></div>
-    </section>
+    <!-- Main Container -->
+    <div class="container">
+  
+      <!-- Input Section + Graph Visualization (Side by Side) -->
+      <div class="columns">
+  
+        <!-- Left Column: Input Section -->
+        <div class="column is-half">
+          <section class="section" id="input-section">
+            <h2 class="title">Enter Adjacency Matrix</h2>
+            <p>
+              0 = no connection, 1 = full connection. Values other than 0 are also
+              accepted and result in a weighting of the connection. Enter a symmetrical
+              matrix (mirrored at diagonal).
+            </p>
+            <textarea id="adjacency-matrix" rows="6" cols="50">0 1 1 0 1
+  1 0 0 0 0
+  1 0 0 1 0
+  0 0 1 0 0
+  1 0 0 0 0</textarea>
+            <button class="button is-primary" id="visualize-button">Visualize Graph</button>
+  
+            <h2 class="title">Predefined Graphs</h2>
+            <div class="buttons">
+              <button class="button" id="graph-small-button">Small Graph</button>
+              <button class="button" id="graph-cluster-button">Cluster Graph</button>
+              <button class="button" id="graph-large-button">Large Graph</button>
+              <button class="button" id="graph-weighted-button">Weighted Graph</button>
+            </div>
+          </section>
+        </div>
+  
+        <!-- Right Column: Graph Visualization -->
+        <div class="column is-half">
+          <section class="section" id="graph-display">
+            <h2 class="title">Graph Visualization</h2>
+            <div id="graph" style="width: 100%; height: 400px; border: 1px solid lightgray;"></div>
+          </section>
+        </div>
+  
+      </div>
 
-    <section id="results">
-        <h2>Results</h2>
+    </div>
+          <!-- Results Section -->
+    <section class="section" id="results">
+        <h2 class="title">Results</h2>
         <div id="laplacian"></div>
         <div id="eigenvalues"></div>
         <div id="eigenvectors"></div>
         <p id="disclaimer">Note: The highlighted row represents the eigenvalues.</p>
     </section>
-    <section id="explanations">
-        <h2>Explanations</h2>
-    
-        <h3>Graph Structure Embedding</h3>
-        <p>
+    <section class="section" id="explanations">
+        <!-- Section Header -->
+        <div class="content">
+          <h2 class="title has-text-info has-text-centered is-uppercase">Explanations</h2>
+          <hr class="has-background-info-light">
+      
+          <!-- Explanation Subsections -->
+          <h3 class="subtitle has-text-weight-semibold has-text-info">Graph Structure Embedding</h3>
+          <p>
             Eigenvalues and eigenvectors are fundamental in numerically embedding the structure of a graph into vectors assigned to nodes. This embedding captures the essence of the graph's connectivity and can reveal properties such as clusters, bridges, or centrality.
-        </p>
-    
-        <h3>Laplacian Matrix</h3>
-        <p>
+          </p>
+      
+          <h3 class="subtitle has-text-weight-semibold has-text-info">Laplacian Matrix</h3>
+          <p>
             The Laplacian matrix of a graph is a representation of its structure. It is calculated as L = D - A, where D is the degree matrix (a diagonal matrix where D[i][i] is the degree of node i) and A is the adjacency matrix of the graph. The Laplacian matrix captures the degree of each vertex and the connections between them.
-        </p>
-    
-        <h3>Eigenvalues and Eigenvectors of the Laplacian</h3>
-        <p>
+          </p>
+      
+          <h3 class="subtitle has-text-weight-semibold has-text-info">Eigenvalues and Eigenvectors of the Laplacian</h3>
+          <p>
             Eigenvalues and eigenvectors of the Laplacian matrix provide insights into the graph's properties. Eigenvalues reflect the topology of the graph, where smaller eigenvalues indicate tightly-knit communities or clusters within the graph. The corresponding eigenvectors can be seen as indicators of node positions within these communities.
-        </p>
-    
-        <h3>Significance in Graph Analysis</h3>
-        <p>
+          </p>
+      
+          <h3 class="subtitle has-text-weight-semibold has-text-info">Significance in Graph Analysis</h3>
+          <p>
             Analyzing the eigenvalues and eigenvectors of the Laplacian matrix is crucial in understanding the graph's structure. For instance, the number of zero eigenvalues corresponds to the number of connected components in the graph. Eigenvectors associated with these zero eigenvalues indicate the nodes belonging to each connected component.
-        </p>
-    
-        <p>
+          </p>
+          <p>
             Furthermore, the second-smallest eigenvalue (often called the Fiedler value) and its corresponding eigenvector (the Fiedler vector) are particularly important in spectral graph theory. They can be used to partition the graph into two subgraphs effectively, aiding in tasks like community detection and graph visualization.
-        </p>
-    </section>
-    <section id="reconstructed-matrix">
-        <h2>Reconstruct Adjacency Matrix</h2>
-        <button id="reconstruct-button">Reconstruct Adjacency</button>
-        <p>Reconstructs the Adjacency Matrix from the eigenvalues and eigenvectors.</p>
-        <p>False reconstructions are marked in red. In this algorithm, elements on the diagonal show the amount of connections to other nodes. Hence, the diagonal will always be marked in red. </p>
-        <div id="reconstructed-matrix-content"></div>
-    </section>    
+          </p>
+        </div>
+      </section>
+      
+      <section class="section" id="reconstructed-matrix">
+        <!-- Section Header -->
+        <div class="content">
+          <h2 class="title has-text-primary has-text-centered is-uppercase">Reconstruct Adjacency Matrix</h2>
+          <hr class="has-background-primary-light">
+      
+          <!-- Reconstruction Button and Description -->
+          <div class="box">
+            <button class="button is-primary is-medium" id="reconstruct-button">Reconstruct Adjacency</button>
+            <p class="mt-4">
+              Reconstructs the Adjacency Matrix from the eigenvalues and eigenvectors.
+            </p>
+            <p>
+              <strong>Note:</strong> False reconstructions are marked in red. In this algorithm, elements on the diagonal show the amount of connections to other nodes. Hence, the diagonal will always be marked in red.
+            </p>
+          </div>
+      
+          <!-- Reconstruction Output -->
+          <div id="reconstructed-matrix-content" class="has-background-light p-5" style="min-height: 200px;">
+            <!-- Content will be dynamically loaded -->
+          </div>
+        </div>
+      </section>
+    <div id="footer"></div>
+    <script src="js/includes.js"></script>
 </body>
 </html>
